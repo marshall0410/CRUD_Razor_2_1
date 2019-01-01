@@ -14,6 +14,9 @@ namespace CRUD_Razor_2_1.Pages.BooksList
 
         private readonly ApplicationDbContext _db;
 
+        [TempData]
+        public string Message { get; set; }
+
         public IEnumerable<Book> Books {get; set;}
 
         public IndexModel(ApplicationDbContext db)
@@ -25,5 +28,17 @@ namespace CRUD_Razor_2_1.Pages.BooksList
         {
             Books = await _db.Books.ToListAsync();
         }
+
+        public async Task<IActionResult> OnPostDelete(int id)
+        {
+            var Book = await _db.Books.FindAsync(id);
+            _db.Books.Remove(Book);
+            await _db.SaveChangesAsync();
+
+            Message = "Book Deleted Successfully";
+
+            return RedirectToPage("Index");
+        }
+
     }
 }

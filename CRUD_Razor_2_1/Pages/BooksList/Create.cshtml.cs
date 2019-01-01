@@ -21,6 +21,9 @@ namespace CRUD_Razor_2_1.Pages.BooksList
         [BindProperty]
         public Book Book { get; set; }
 
+        [TempData]
+        public string Message { get; set; }
+
         public async Task<IActionResult> OnPost(Book Book)
         {
             if (!ModelState.IsValid)
@@ -31,6 +34,8 @@ namespace CRUD_Razor_2_1.Pages.BooksList
             _db.Books.Add(Book);
 
             await _db.SaveChangesAsync();
+
+            Message = "Book added to Database";
 
             return RedirectToPage("Index");
         }
